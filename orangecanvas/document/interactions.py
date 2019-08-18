@@ -1282,9 +1282,9 @@ class NewArrowAnnotation(UserInteraction):
         self.document.view().setCursor(Qt.CrossCursor)
 
         helpevent = QuickHelpTipEvent(
-            self.tr("Click and drag to create a new arrow"),
-            self.tr('<h3>New arrow annotation</h3>'
-                    '<p>Click and drag to create a new arrow annotation</p>'
+            self.tr("单击并拖动以创建新箭头"),
+            self.tr('<h3>新建箭头批注</h3>'
+                    '<p>单击并拖动以创建新的箭头批注</p>'
 #                    '<a href="help://orange-canvas/arrow-annotations>'
 #                    'More ...</a>'
                     )
@@ -1407,10 +1407,9 @@ class NewTextAnnotation(UserInteraction):
         self.document.view().setCursor(Qt.CrossCursor)
 
         helpevent = QuickHelpTipEvent(
-            self.tr("Click to create a new text annotation"),
-            self.tr('<h3>New text annotation</h3>'
-                    '<p>Click (and drag to resize) on the canvas to create '
-                    'a new text annotation item.</p>'
+            self.tr("单击创建新的文本批注"),
+            self.tr('<h3>新建文本批注</h3>'
+                    '<p>在画布上单击（并拖动以调整大小）以创建新的文本注释项。</p>'
 #                    '<a href="help://orange-canvas/text-annotations">'
 #                    'More ...</a>'
                     )

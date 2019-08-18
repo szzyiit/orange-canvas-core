@@ -267,8 +267,8 @@ class UserSettingsDialog(QMainWindow):
 
         # General Tab
         tab = QWidget()
-        self.addTab(tab, self.tr("General"),
-                    toolTip=self.tr("General Options"))
+        self.addTab(tab, self.tr("常规"),
+                    toolTip=self.tr("常规选项"))
 
         form = FormLayout()
         tab.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -278,56 +278,46 @@ class UserSettingsDialog(QMainWindow):
         nodes.layout().setContentsMargins(0, 0, 0, 0)
 
         cb_anim = QCheckBox(
-            self.tr("Enable node animations"),
+            self.tr("启用节点动画"),
             objectName="enable-node-animations",
-            toolTip=self.tr("Enable shadow and ping animations for nodes "
-                            "in the workflow.")
+            toolTip=self.tr("为工作流中的节点启用阴影和ping动画。")
         )
         self.bind(cb_anim, "checked", "schemeedit/enable-node-animations")
         nodes.layout().addWidget(cb_anim)
 
-        form.addRow(self.tr("Nodes"), nodes)
+        form.addRow(self.tr("结点"), nodes)
 
         links = QWidget(self, objectName="links")
         links.setLayout(QVBoxLayout())
         links.layout().setContentsMargins(0, 0, 0, 0)
 
         cb_show = QCheckBox(
-            self.tr("Show channel names between widgets"),
+            self.tr("在窗口小部件之间显示通道名称"),
             objectName="show-channel-names",
-            toolTip=self.tr("Show source and sink channel names "
-                            "over the links.")
+            toolTip=self.tr("在链接上显示源和接收器通道名称。")
         )
 
         self.bind(cb_show, "checked", "schemeedit/show-channel-names")
 
         links.layout().addWidget(cb_show)
 
-        form.addRow(self.tr("Links"), links)
+        form.addRow(self.tr("链接"), links)
 
         quickmenu = QWidget(self, objectName="quickmenu-options")
         quickmenu.setLayout(QVBoxLayout())
         quickmenu.layout().setContentsMargins(0, 0, 0, 0)
 
-        cb1 = QCheckBox(self.tr("Open on double click"),
-                        toolTip=self.tr("Open quick menu on a double click "
-                                        "on an empty spot in the canvas"))
+        cb1 = QCheckBox(self.tr("双击时打开"),
+                        toolTip=self.tr("双击画布中的空白位置打开快捷菜单"))
 
-        cb2 = QCheckBox(self.tr("Open on right click"),
-                        toolTip=self.tr("Open quick menu on a right click "
-                                        "on an empty spot in the canvas"))
+        cb2 = QCheckBox(self.tr("单击鼠标右键时打开"),
+                        toolTip=self.tr("右键单击画布中的空白处打开快捷菜单"))
 
-        cb3 = QCheckBox(self.tr("Open on space key press"),
-                        toolTip=self.tr("Open quick menu on Space key press "
-                                        "while the mouse is hovering over the canvas."))
+        cb3 = QCheckBox(self.tr("按空格键时打开"),
+                        toolTip=self.tr("当鼠标悬停在画布上时，按空格键。"))
 
-        cb4 = QCheckBox(self.tr("Open on any key press"),
-                        toolTip=self.tr("Open quick menu on any key press "
-                                        "while the mouse is hovering over the canvas."))
-
-        cb5 = QCheckBox(self.tr("Show categories"),
-                        toolTip=self.tr("In addition to searching, allow filtering "
-                                        "by categories."))
+        cb4 = QCheckBox(self.tr("按任意按键时打开"),
+                        toolTip=self.tr("当鼠标悬停在画布上时，按任意键。"))
 
         self.bind(cb1, "checked", "quickmenu/trigger-on-double-click")
         self.bind(cb2, "checked", "quickmenu/trigger-on-right-click")
@@ -341,19 +331,19 @@ class UserSettingsDialog(QMainWindow):
         quickmenu.layout().addWidget(cb4)
         quickmenu.layout().addWidget(cb5)
 
-        form.addRow(self.tr("Quick menu"), quickmenu)
+        form.addRow(self.tr("快捷菜单"), quickmenu)
 
         startup = QWidget(self, objectName="startup-group")
         startup.setLayout(QVBoxLayout())
         startup.layout().setContentsMargins(0, 0, 0, 0)
 
-        cb_splash = QCheckBox(self.tr("Show splash screen"), self,
+        cb_splash = QCheckBox(self.tr("显示启动画面"), self,
                               objectName="show-splash-screen")
 
-        cb_welcome = QCheckBox(self.tr("Show welcome screen"), self,
+        cb_welcome = QCheckBox(self.tr("显示欢迎界面"), self,
                                objectName="show-welcome-screen")
 
-        cb_crash = QCheckBox(self.tr("Load crashed scratch workflows"), self,
+        cb_crash = QCheckBox(self.tr("加载崩溃的工作流"), self,
                              objectName="load-crashed-workflows")
 
         self.bind(cb_splash, "checked", "startup/show-splash-screen")
@@ -364,19 +354,19 @@ class UserSettingsDialog(QMainWindow):
         startup.layout().addWidget(cb_welcome)
         startup.layout().addWidget(cb_crash)
 
-        form.addRow(self.tr("On startup"), startup)
+        form.addRow(self.tr("启动时"), startup)
 
         toolbox = QWidget(self, objectName="toolbox-group")
         toolbox.setLayout(QVBoxLayout())
         toolbox.layout().setContentsMargins(0, 0, 0, 0)
 
-        exclusive = QCheckBox(self.tr("Only one tab can be open at a time"))
+        exclusive = QCheckBox(self.tr("一次只能打开一个选项卡"))
 
         self.bind(exclusive, "checked", "mainwindow/toolbox-dock-exclusive")
 
         toolbox.layout().addWidget(exclusive)
 
-        form.addRow(self.tr("Tool box"), toolbox)
+        form.addRow(self.tr("工具箱"), toolbox)
         tab.setLayout(form)
 
         # Style tab
@@ -387,29 +377,28 @@ class UserSettingsDialog(QMainWindow):
 
         # Output Tab
         tab = QWidget()
-        self.addTab(tab, self.tr("Output"),
-                    toolTip="Output Redirection")
+        self.addTab(tab, self.tr("输出"),
+                    toolTip="输出重定向")
 
         form = FormLayout()
 
         combo = QComboBox()
-        combo.addItems([self.tr("Critical"),
-                        self.tr("Error"),
-                        self.tr("Warn"),
-                        self.tr("Info"),
-                        self.tr("Debug")])
+        combo.addItems([self.tr("关键"),
+                        self.tr("错误"),
+                        self.tr("警告"),
+                        self.tr("信息"),
+                        self.tr("调试")])
         self.bind(combo, "currentIndex", "logging/level")
-        form.addRow(self.tr("Logging"), combo)
-
+        form.addRow(self.tr("记录"), combo)
         box = QWidget()
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        cb1 = QCheckBox(self.tr("Open in external browser"),
+        cb1 = QCheckBox(self.tr("在外部浏览器中打开"),
                         objectName="open-in-external-browser")
         self.bind(cb1, "checked", "help/open-in-external-browser")
         layout.addWidget(cb1)
         box.setLayout(layout)
-        form.addRow(self.tr("Help window"), box)
+        form.addRow(self.tr("帮助窗口"), box)
 
         tab.setLayout(form)
 
@@ -443,26 +432,26 @@ class UserSettingsDialog(QMainWindow):
                 )
         )
 
-        self.addTab(tab, "Categories")
+        self.addTab(tab, "类别")
 
         # Add-ons Tab
         tab = QWidget()
-        self.addTab(tab, self.tr("Add-ons"),
-                    toolTip="Settings related to add-on installation")
+        self.addTab(tab, self.tr("插件"),
+                    toolTip="与插件安装相关的设置")
 
         form = FormLayout()
         conda = QWidget(self, objectName="conda-group")
         conda.setLayout(QVBoxLayout())
         conda.layout().setContentsMargins(0, 0, 0, 0)
 
-        cb_conda_install = QCheckBox(self.tr("Install add-ons with conda"), self,
+        cb_conda_install = QCheckBox(self.tr("使用 Conda 安装附加组件"), self,
                                      objectName="allow-conda")
         self.bind(cb_conda_install, "checked", "add-ons/allow-conda")
         conda.layout().addWidget(cb_conda_install)
 
         form.addRow(self.tr("Conda"), conda)
 
-        form.addRow(self.tr("Pip"), QLabel("Pip install arguments:"))
+        form.addRow(self.tr("Pip"), QLabel("Pip 安装参数:"))
         line_edit_pip = QLineEdit()
         self.bind(line_edit_pip, "text", "add-ons/pip-install-arguments")
         form.addRow("", line_edit_pip)
@@ -471,16 +460,16 @@ class UserSettingsDialog(QMainWindow):
 
         # Network Tab
         tab = QWidget()
-        self.addTab(tab, self.tr("Network"),
-                    toolTip="Settings related to networking")
+        self.addTab(tab, self.tr("网络"),
+                    toolTip="与网络相关的设置")
 
         form = FormLayout()
         line_edit_http_proxy = QLineEdit()
         self.bind(line_edit_http_proxy, "text", "network/http-proxy")
-        form.addRow("HTTP proxy:", line_edit_http_proxy)
+        form.addRow("HTTP 代理:", line_edit_http_proxy)
         line_edit_https_proxy = QLineEdit()
         self.bind(line_edit_https_proxy, "text", "network/https-proxy")
-        form.addRow("HTTPS proxy:", line_edit_https_proxy)
+        form.addRow("HTTPS 代理:", line_edit_https_proxy)
         tab.setLayout(form)
 
         if self.__macUnified:

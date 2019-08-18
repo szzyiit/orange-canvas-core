@@ -1,23 +1,23 @@
 #! /usr/bin/env python
 from setuptools import setup, find_packages
 
-NAME = "orange-canvas-core"
+NAME = "orange-canvas-core-ml"
 VERSION = "0.1.19.dev0"
 DESCRIPTION = "Core component of Orange Canvas"
 
 with open("README.rst", "rt", encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
 
-URL = "http://orange.biolab.si/"
-AUTHOR = "Bioinformatics Laboratory, FRI UL"
-AUTHOR_EMAIL = 'contact@orange.biolab.si'
+URL = "http://zhaoyang.org.cn/"
+AUTHOR = "SZZYIIT"
+AUTHOR_EMAIL = 'gengy@zhaoyang.org'
 
 LICENSE = "GPLv3"
-DOWNLOAD_URL = 'https://github.com/biolab/orange-canvas-core'
+DOWNLOAD_URL = 'https://github.com/szzyiit/orange-canvas-core'
 PACKAGES = find_packages()
 
 PACKAGE_DATA = {
-    "orangecanvas": ["icons/*.svg", "icons/*png"],
+    "orangecanvas": ["icons/*.svg", "icons/*png", "*.qm"],
     "orangecanvas.styles": ["*.qss", "orange/*.svg"],
 }
 
@@ -51,8 +51,8 @@ EXTRAS_REQUIRE = {
 }
 
 PROJECT_URLS = {
-    "Bug Reports": "https://github.com/biolab/orange-canvas-core/issues",
-    "Source": "https://github.com/biolab/orange-canvas-core/",
+    "Bug Reports": "https://github.com/szzyiit/orange-canvas-core/issues",
+    "Source": "https://github.com/szzyiit/orange-canvas-core/",
     "Documentation": "https://orange-canvas-core.readthedocs.io/en/latest/",
 }
 

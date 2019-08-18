@@ -331,7 +331,7 @@ class PluginsModel(QStandardItemModel):
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent, **kwargs)
         self.setHorizontalHeaderLabels(
-            ["", self.tr("Name"), self.tr("Version"), self.tr("Action")]
+            ["", self.tr("名称"), self.tr("版本"), self.tr("行动")]
         )
 
     @staticmethod
@@ -543,11 +543,11 @@ class AddonManagerDialog(QDialog):
 
         self.__search = QLineEdit(
             objectName="filter-edit",
-            placeholderText=self.tr("Filter...")
+            placeholderText=self.tr("过滤...")
         )
         self.__addmore = QPushButton(
-            self.tr("Add more..."),
-            toolTip=self.tr("Add an add-on not listed below"),
+            self.tr("添加更多..."),
+            toolTip=self.tr("添加没有列出的插件"),
             autoDefault=False
         )
         self.__view = view = QTreeView(
@@ -690,7 +690,7 @@ class AddonManagerDialog(QDialog):
         self.show()
         progress.show()
         progress.setLabelText(
-            self.tr("Retrieving package list")
+            self.tr("正在检索包列表")
         )
         self.__f_pypi_addons = self.__executor.submit(
             lambda config=config: (config, list_available_versions(config)),
@@ -890,7 +890,7 @@ class AddonManagerDialog(QDialog):
 
     def __run_add_package_dialog(self):
         self.__add_package_by_name_dialog = dlg = QDialog(
-            self, windowTitle="Add add-on by name",
+            self, windowTitle="按名称添加插件",
         )
         dlg.setAttribute(Qt.WA_DeleteOnClose)
 
@@ -898,18 +898,17 @@ class AddonManagerDialog(QDialog):
         form = QFormLayout()
         form.setContentsMargins(0, 0, 0, 0)
         nameentry = QLineEdit(
-            placeholderText="Package name",
-            toolTip="Enter a package name as displayed on "
-                    "PyPI (capitalization is not important)")
+            placeholderText="程序包名称",
+            toolTip="输入显示的包名称,PyPI（大写并不重要）")
         nameentry.setMinimumWidth(250)
-        form.addRow("Name:", nameentry)
+        form.addRow("名称:", nameentry)
         vlayout.addLayout(form)
         buttons = QDialogButtonBox(
             standardButtons=QDialogButtonBox.Ok | QDialogButtonBox.Cancel
         )
         okb = buttons.button(QDialogButtonBox.Ok)
         okb.setEnabled(False)
-        okb.setText("Add")
+        okb.setText("添加")
 
         def changed(name):
             okb.setEnabled(bool(name))
@@ -929,7 +928,7 @@ class AddonManagerDialog(QDialog):
 
     @Slot(str, str)
     def __show_error_for_query(self, text, error_details):
-        message_error(text, title="Error", details=error_details)
+        message_error(text, title="错误", details=error_details)
 
     @Slot(object)
     def __on_add_query_finish(self, f):
@@ -941,7 +940,7 @@ class AddonManagerDialog(QDialog):
             result = f.result()
         except Exception:
             log.error("Query error:", exc_info=True)
-            error_text = "Failed to query package index"
+            error_text = "查询包索引失败"
             error_details = traceback.format_exc()
         else:
             not_found = [r.queryname for r in result if r.installable is None]
@@ -964,9 +963,9 @@ class AddonManagerDialog(QDialog):
             self.__progress = QProgressDialog(
                 self,
                 minimum=0, maximum=0,
-                labelText=self.tr("Retrieving package list"),
+                labelText=self.tr("正在检索包列表"),
                 sizeGripEnabled=False,
-                windowTitle=self.tr("Progress")
+                windowTitle="进度"
             )
             self.__progress.setWindowModality(Qt.WindowModal)
             self.__progress.hide()
@@ -1087,7 +1086,7 @@ class AddonManagerDialog(QDialog):
 
             self.__installer.installStatusChanged.connect(progress.setLabelText)
             progress.show()
-            progress.setLabelText("Installing")
+            progress.setLabelText("正在安装")
             self.__installer.start()
 
         else:
@@ -1105,8 +1104,8 @@ class AddonManagerDialog(QDialog):
     def __on_installer_error(self, command, pkg, retcode, output):
         self.__on_installer_finished_common()
         message_error(
-            "An error occurred while running a subprocess", title="Error",
-            informative_text="{} exited with non zero status.".format(command),
+            "运行子进程时出错", title="错误",
+            informative_text="{} 以非零状态退出。".format(command),
             details="".join(output),
             parent=self
         )
@@ -1119,14 +1118,14 @@ class AddonManagerDialog(QDialog):
         def message_restart(parent):
             icon = QMessageBox.Information
             buttons = QMessageBox.Ok | QMessageBox.Cancel
-            title = 'Information'
-            text = ('{} needs to be restarted for the changes to take effect.'
+            title = '信息'
+            text = ('{} 需要重新启动才能使更改生效。'
                     .format(name))
             msg_box = QMessageBox(icon, title, text, buttons, parent)
             msg_box.setDefaultButton(QMessageBox.Ok)
-            msg_box.setInformativeText('Press OK to restart {} now.'
+            msg_box.setInformativeText('按 OK 键立即关闭 {} '
                                        .format(name))
-            msg_box.button(QMessageBox.Cancel).setText('Close later')
+            msg_box.button(QMessageBox.Cancel).setText('稍后关闭')
             return msg_box.exec_()
 
         if QMessageBox.Ok == message_restart(self):
@@ -1454,19 +1453,19 @@ class Installer(QObject):
             if command == Install \
                     or (command == Upgrade and pkg.installable.force):
                 self.setStatusMessage(
-                    "Installing {}".format(pkg.installable.name))
+                    "正在安装 {}".format(pkg.installable.name))
                 if self.conda:
                     self.conda.install(pkg.installable, raise_on_fail=False)
                 self.pip.install(pkg.installable)
             elif command == Upgrade:
                 self.setStatusMessage(
-                    "Upgrading {}".format(pkg.installable.name))
+                    "正在升级{}".format(pkg.installable.name))
                 if self.conda:
                     self.conda.upgrade(pkg.installable, raise_on_fail=False)
                 self.pip.upgrade(pkg.installable)
             elif command == Uninstall:
                 self.setStatusMessage(
-                    "Uninstalling {}".format(pkg.local.project_name))
+                    "正在卸载{}".format(pkg.local.project_name))
                 if self.conda:
                     try:
                         self.conda.uninstall(pkg.local, raise_on_fail=True)
@@ -1476,7 +1475,7 @@ class Installer(QObject):
                     self.pip.uninstall(pkg.local)
         except CommandFailed as ex:
             self.error.emit(
-                "Command failed: python {}".format(ex.cmd),
+                "命令失败：python {}".format(ex.cmd),
                 pkg, ex.retcode, ex.output
             )
             return

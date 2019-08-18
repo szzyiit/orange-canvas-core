@@ -257,7 +257,7 @@ class PreviewBrowser(QWidget):
             if description:
                 description = description
             else:
-                description = "No description."
+                description = "没有说明。"
 
             description = escape(description)
             description = description.replace("\n", "<br/>")

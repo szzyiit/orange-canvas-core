@@ -1,5 +1,6 @@
 """
 Orange Canvas Welcome Dialog
+
 """
 from typing import Optional, Union, Iterable
 
@@ -124,7 +125,7 @@ class WelcomeDialog(QDialog):
                                  QSizePolicy.Maximum)
 
         self.__showAtStartupCheck = QCheckBox(
-            self.tr("Show at startup"), bottom_bar, checked=False
+            self.tr("启动时显示"), bottom_bar, checked=False
         )
         self.__feedbackLabel = QLabel(
             textInteractionFlags=Qt.TextBrowserInteraction,
@@ -166,7 +167,7 @@ class WelcomeDialog(QDialog):
         """
         self.__feedbackUrl = url
         if url:
-            text = self.tr("Help us improve!")
+            text = self.tr("帮助我们改进!")
             self.__feedbackLabel.setText(
                 '<a href="{url}">{text}</a>'.format(url=url, text=escape(text))
             )

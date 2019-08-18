@@ -177,7 +177,7 @@ class TextAnnotation(Annotation):
 
         self.__textItem = GraphicsTextEdit(self)
         self.__textItem.setOpenExternalLinks(True)
-        self.__textItem.setPlaceholderText(self.tr("Enter text here"))
+        self.__textItem.setPlaceholderText(self.tr("在此处输入文本"))
         self.__textItem.setPos(2, 2)
         self.__textItem.setTextWidth(rect.width() - 4)
         self.__textItem.setTabChangesFocus(True)
