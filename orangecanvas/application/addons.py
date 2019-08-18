@@ -965,7 +965,7 @@ class AddonManagerDialog(QDialog):
                 minimum=0, maximum=0,
                 labelText=self.tr("正在检索包列表"),
                 sizeGripEnabled=False,
-                windowTitle="进度"
+                windowTitle=self.tr("进度")
             )
             self.__progress.setWindowModality(Qt.WindowModal)
             self.__progress.hide()
