@@ -1,9 +1,15 @@
 #! /usr/bin/env python
 from setuptools import setup, find_packages
 
+<<<<<<< HEAD
 NAME = "orange-canvas-core-ml"
 VERSION = "0.1.19.dev0"
 DESCRIPTION = "Core component of Orange Canvas"
+=======
+NAME = "orange-canvas-core"
+VERSION = "0.1.12.dev0"
+DESCRIPTION = "Core component of Orange Canvas modifed"
+>>>>>>> only chinese
 
 with open("README.rst", "rt", encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()

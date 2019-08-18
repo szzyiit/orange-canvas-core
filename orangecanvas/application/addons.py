@@ -1119,12 +1119,25 @@ class AddonManagerDialog(QDialog):
             icon = QMessageBox.Information
             buttons = QMessageBox.Ok | QMessageBox.Cancel
             title = '信息'
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            name = QApplication.applicationName() or 'Orange'
+>>>>>>> only chinese
             text = ('{} 需要重新启动才能使更改生效。'
                     .format(name))
             msg_box = QMessageBox(icon, title, text, buttons, parent)
             msg_box.setDefaultButton(QMessageBox.Ok)
             msg_box.setInformativeText('按 OK 键立即关闭 {} '
                                        .format(name))
+=======
+            text = '需要重新启动 Orange 才能使更改生效。'
+
+            msg_box = QMessageBox(icon, title, text, buttons, parent)
+            msg_box.setDefaultButton(QMessageBox.Ok)
+            msg_box.setInformativeText('按 OK 键立即关闭 Orange。')
+
+>>>>>>> only chinese
             msg_box.button(QMessageBox.Cancel).setText('稍后关闭')
             return msg_box.exec_()
 

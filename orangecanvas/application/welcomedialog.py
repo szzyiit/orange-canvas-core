@@ -155,9 +155,15 @@ class WelcomeDialog(QDialog):
         bottom_bar.setSizePolicy(QSizePolicy.MinimumExpanding,
                                  QSizePolicy.Maximum)
 
+<<<<<<< HEAD
         # self.__showAtStartupCheck = QCheckBox(
         #     self.tr("启动时显示"), bottom_bar, checked=True
         # )
+=======
+        self.__showAtStartupCheck = QCheckBox(
+            self.tr("启动时显示"), bottom_bar, checked=False
+        )
+>>>>>>> only chinese
         self.__feedbackLabel = QLabel(
             textInteractionFlags=Qt.TextBrowserInteraction,
             openExternalLinks=True,
