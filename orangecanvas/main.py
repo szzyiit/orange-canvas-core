@@ -19,7 +19,7 @@ from contextlib import ExitStack, redirect_stdout, redirect_stderr, closing
 import pkg_resources
 
 from AnyQt.QtGui import QFont, QColor, QPalette
-from AnyQt.QtCore import Qt, QDir, QSettings, QT_VERSION
+from AnyQt.QtCore import Qt, QDir, QSettings, QT_VERSION, QTranslator
 
 from .utils.after_exit import run_after_exit
 from .styles import breeze_dark
@@ -239,6 +239,11 @@ def main(argv=None):
 
     log.debug("Starting CanvasApplicaiton with argv = %r.", qt_argv)
     app = CanvasApplication(qt_argv)
+    
+    trans = QTranslator()
+    trans.load("./orangecanvas/orangecanvas_cn")
+    app.installTranslator(trans)
+
     if app.style().metaObject().className() == "QFusionStyle":
         if fusiontheme == "breeze-dark":
             app.setPalette(breeze_dark())
@@ -415,6 +420,8 @@ def main(argv=None):
         stderr.stream.connect(sys.stderr.write)
         stderr.flushed.connect(sys.stderr.flush)
 
+
+   
     with ExitStack() as stack:
         stack.enter_context(closing(stderr))
         stack.enter_context(closing(stdout))

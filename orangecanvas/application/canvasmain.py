@@ -283,12 +283,12 @@ class CanvasMainWindow(QMainWindow):
         self.dock_help.setMaximumHeight(150)
         self.dock_help.document().setDefaultStyleSheet("h3, a {color: orange;}")
 
-        self.dock_help.setDefaultText(
+        self.dock_help.setDefaultText(self.tr(
             "Select a widget to show its description."
             "<br/><br/>"
             "See <a href='action:examples-action'>workflow examples</a>, "
             "<a href='action:screencasts-action'>YouTube tutorials</a>, "
-            "or open the <a href='action:welcome-action'>welcome screen</a>."
+            "or open the <a href='action:welcome-action'>welcome screen</a>.")
         )
         self.dock_help_action = canvas_tool_dock.toggleQuickHelpAction()
         self.dock_help_action.setText(self.tr("Show Help"))

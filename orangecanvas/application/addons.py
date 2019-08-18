@@ -966,7 +966,7 @@ class AddonManagerDialog(QDialog):
                 minimum=0, maximum=0,
                 labelText=self.tr("Retrieving package list"),
                 sizeGripEnabled=False,
-                windowTitle="Progress"
+                windowTitle=self.tr("Progress")
             )
             self.__progress.setWindowModality(Qt.WindowModal)
             self.__progress.hide()
