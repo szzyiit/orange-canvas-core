@@ -2,6 +2,7 @@
 Orange Canvas Welcome Dialog
 
 """
+from pathlib import Path
 from typing import Optional, Union, Iterable
 
 from xml.sax.saxutils import escape
@@ -117,6 +118,36 @@ class WelcomeDialog(QDialog):
 
         self.setStyleSheet(WELCOME_WIDGET_BUTTON_STYLE)
 
+
+        dir_path = Path(__file__).resolve()
+        parent_path = dir_path.parent.parent
+        icon_path = f'{str(parent_path)}/icons'
+
+        guanzhu_box = QVBoxLayout()
+        guanzhu_label = QLabel()
+        guanzhu_pic = QPixmap(icon_path + '/weixin.png')
+        guanzhu_label.setPixmap(guanzhu_pic)
+
+        guanzhu_text = QLabel('关注我们')
+        guanzhu_box.addWidget(guanzhu_label, alignment=Qt.AlignVCenter | Qt.AlignHCenter)
+        guanzhu_box.addWidget(guanzhu_text, alignment=Qt.AlignVCenter | Qt.AlignHCenter)
+
+        zan_box = QVBoxLayout()
+        zan_label = QLabel()
+        pixmap = QPixmap(icon_path + '/zan.png')
+        zan_label.setPixmap(pixmap)
+
+        zan_text = QLabel('赞赏开发者')
+        zan_box.addWidget(zan_label, alignment=Qt.AlignVCenter | Qt.AlignHCenter)
+        zan_box.addWidget(zan_text, alignment=Qt.AlignVCenter | Qt.AlignHCenter)
+
+        weixinBox = QHBoxLayout()
+        weixinBox.addLayout(guanzhu_box)
+        weixinBox.addLayout(zan_box)
+
+        self.layout().addLayout(weixinBox)
+
+
         bottom_bar = QWidget(objectName="bottom-bar")
         bottom_bar_layout = QHBoxLayout()
         bottom_bar_layout.setContentsMargins(20, 10, 20, 10)
@@ -124,18 +155,18 @@ class WelcomeDialog(QDialog):
         bottom_bar.setSizePolicy(QSizePolicy.MinimumExpanding,
                                  QSizePolicy.Maximum)
 
-        self.__showAtStartupCheck = QCheckBox(
-            self.tr("启动时显示"), bottom_bar, checked=False
-        )
+        # self.__showAtStartupCheck = QCheckBox(
+        #     self.tr("启动时显示"), bottom_bar, checked=True
+        # )
         self.__feedbackLabel = QLabel(
             textInteractionFlags=Qt.TextBrowserInteraction,
             openExternalLinks=True,
             visible=False,
         )
 
-        bottom_bar_layout.addWidget(
-            self.__showAtStartupCheck, alignment=Qt.AlignVCenter | Qt.AlignLeft
-        )
+        # bottom_bar_layout.addWidget(
+        #     self.__showAtStartupCheck, alignment=Qt.AlignVCenter | Qt.AlignLeft
+        # )
         bottom_bar_layout.addWidget(
             self.__feedbackLabel, alignment=Qt.AlignVCenter | Qt.AlignRight
         )
@@ -143,22 +174,24 @@ class WelcomeDialog(QDialog):
                                 stretch=1)
 
         self.setSizeGripEnabled(False)
-        self.setFixedSize(620, 390)
+        self.setFixedSize(620, 590)
 
     def setShowAtStartup(self, show):
         # type: (bool) -> None
         """
         Set the 'Show at startup' check box state.
         """
-        if self.__showAtStartupCheck.isChecked() != show:
-            self.__showAtStartupCheck.setChecked(show)
+        pass
+        # if self.__showAtStartupCheck.isChecked() != show:
+        #     # self.__showAtStartupCheck.setChecked(show)
 
     def showAtStartup(self):
         # type: () -> bool
         """
         Return the 'Show at startup' check box state.
         """
-        return self.__showAtStartupCheck.isChecked()
+        # return self.__showAtStartupCheck.isChecked()
+        return True
 
     def setFeedbackUrl(self, url):
         # type: (str) -> None

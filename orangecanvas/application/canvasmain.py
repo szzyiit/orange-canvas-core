@@ -287,7 +287,7 @@ class CanvasMainWindow(QMainWindow):
             "选择一个小部件以显示其说明."
             "<br/><br/>"
             "参见 <a href='action:examples-action'>工作流示例</a>, "
-            "<a href='action:screencasts-action'>YouTube教程</a>, "
+            "<a href='action:screencasts-action'>视频教程</a>, "
             "或者打开<a href='action:welcome-action'>欢迎屏幕</a>."
         )
         self.dock_help_action = canvas_tool_dock.toggleQuickHelpAction()
@@ -1845,7 +1845,8 @@ class CanvasMainWindow(QMainWindow):
         # type: () -> int
         """Show a modal welcome dialog for Orange Canvas.
         """
-        name = QApplication.applicationName()
+        # name = QApplication.applicationName()
+        name = '橙现智能 -- 深圳兆阳信息技术研究院定制开发'
         if name:
             title = self.tr("欢迎使用 {}").format(name)
         else:
