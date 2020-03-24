@@ -1119,25 +1119,13 @@ class AddonManagerDialog(QDialog):
             icon = QMessageBox.Information
             buttons = QMessageBox.Ok | QMessageBox.Cancel
             title = '信息'
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
             name = QApplication.applicationName() or 'Orange'
->>>>>>> only chinese
             text = ('{} 需要重新启动才能使更改生效。'
                     .format(name))
             msg_box = QMessageBox(icon, title, text, buttons, parent)
             msg_box.setDefaultButton(QMessageBox.Ok)
             msg_box.setInformativeText('按 OK 键立即关闭 {} '
                                        .format(name))
-=======
-            text = '需要重新启动 Orange 才能使更改生效。'
-
-            msg_box = QMessageBox(icon, title, text, buttons, parent)
-            msg_box.setDefaultButton(QMessageBox.Ok)
-            msg_box.setInformativeText('按 OK 键立即关闭 Orange。')
-
->>>>>>> only chinese
             msg_box.button(QMessageBox.Cancel).setText('稍后关闭')
             return msg_box.exec_()
 
@@ -1468,23 +1456,18 @@ class Installer(QObject):
                 self.setStatusMessage(
                     "正在安装 {}".format(pkg.installable.name))
                 if self.conda:
-                    self.conda.install(pkg.installable, raise_on_fail=False)
-                self.pip.install(pkg.installable)
+                    self.pip.install(pkg.installable)
+                self.pip.install(pkg.installable, mirror='')
             elif command == Upgrade:
                 self.setStatusMessage(
                     "正在升级{}".format(pkg.installable.name))
                 if self.conda:
-                    self.conda.upgrade(pkg.installable, raise_on_fail=False)
-                self.pip.upgrade(pkg.installable)
+                    self.pip.install(pkg.installable)
+                self.pip.upgrade(pkg.installable, mirror='')
             elif command == Uninstall:
                 self.setStatusMessage(
                     "正在卸载{}".format(pkg.local.project_name))
                 if self.conda:
-                    try:
-                        self.conda.uninstall(pkg.local, raise_on_fail=True)
-                    except CommandFailed:
-                        self.pip.uninstall(pkg.local)
-                else:
                     self.pip.uninstall(pkg.local)
         except CommandFailed as ex:
             self.error.emit(
@@ -1505,9 +1488,9 @@ class PipInstaller:
         arguments = QSettings().value('add-ons/pip-install-arguments', '', type=str)
         self.arguments = shlex.split(arguments)
 
-    def install(self, pkg):
-        # type: (Installable) -> None
-        cmd = ["python", "-m", "pip",  "install"] + self.arguments
+    def install(self, pkg, mirror=('-i', 'https://mirrors.aliyun.com/pypi/simple')):
+        # type: (Installable, Tuple) -> None
+        cmd = ["python", "-m", "pip",  "install"] + self.arguments + list(mirror)
         if pkg.package_url.startswith(("http://", "https://")):
             version = (
                 "=={}".format(pkg.version) if pkg.version is not None else ""
@@ -1518,11 +1501,11 @@ class PipInstaller:
             cmd.append(pkg.package_url)
         run_command(cmd)
 
-    def upgrade(self, package):
+    def upgrade(self, package, mirror=('-i', 'https://mirrors.aliyun.com/pypi/simple')):
         cmd = [
             "python", "-m", "pip", "install",
                 "--upgrade", "--upgrade-strategy=only-if-needed",
-        ] + self.arguments
+        ] + self.arguments  + list(mirror)
         if package.package_url.startswith(("http://", "https://")):
             version = (
                 "=={}".format(package.version) if package.version is not None
@@ -1532,6 +1515,7 @@ class PipInstaller:
         else:
             cmd.append(package.package_url)
         run_command(cmd)
+
 
     def uninstall(self, dist):
         cmd = ["python", "-m", "pip", "uninstall", "--yes", dist.project_name]
@@ -1543,54 +1527,50 @@ class CondaInstaller:
         enabled = QSettings().value('add-ons/allow-conda',
                                     True, type=bool)
         if enabled:
-            self.conda = self._find_conda()
+            self.conda = True
         else:
-            self.conda = None
+            self.conda = False
 
-    def _find_conda(self):
-        executable = sys.executable
-        bin = os.path.dirname(executable)
+    # def _find_conda(self):
+    #     executable = sys.executable
+    #     bin = os.path.dirname(executable)
+    #
+    #     # posix
+    #     conda = os.path.join(bin, "conda")
+    #     if os.path.exists(conda):
+    #         return conda
+    #
+    #     # windows
+    #     conda = os.path.join(bin, "Scripts", "conda.bat")
+    #     if os.path.exists(conda):
+    #         # "activate" conda environment orange is running in
+    #         os.environ["CONDA_PREFIX"] = bin
+    #         os.environ["CONDA_DEFAULT_ENV"] = bin
+    #         return conda
+    #
+    # def install(self, pkg, raise_on_fail=False):
+    #     cmd = [self.conda, "install", "--yes", "--quiet",
+    #            self._normalize(pkg.name)]
+    #     run_command(cmd, raise_on_fail=raise_on_fail)
+    #
+    # def upgrade(self, pkg, raise_on_fail=False):
+    #     cmd = [self.conda, "upgrade", "--yes", "--quiet",
+    #            self._normalize(pkg.name)]
+    #     run_command(cmd, raise_on_fail=raise_on_fail)
+    #
+    # def uninstall(self, dist, raise_on_fail=False):
+    #     cmd = [self.conda, "uninstall", "--yes",
+    #            self._normalize(dist.project_name)]
+    #     run_command(cmd, raise_on_fail=raise_on_fail)
+    #
+    # def _normalize(self, name):
+    #     # Conda 4.3.30 is inconsistent, upgrade command is case sensitive
+    #     # while install and uninstall are not. We assume that all conda
+    #     # package names are lowercase which fixes the problems (for now)
+    #     return name.lower()
 
-        # posix
-        conda = os.path.join(bin, "conda")
-        if os.path.exists(conda):
-            return conda
-
-        # windows
-        conda = os.path.join(bin, "Scripts", "conda.bat")
-        if os.path.exists(conda):
-            # "activate" conda environment orange is running in
-            os.environ["CONDA_PREFIX"] = bin
-            os.environ["CONDA_DEFAULT_ENV"] = bin
-            return conda
-
-    def install(self, pkg, raise_on_fail=False):
-        version = "={}".format(pkg.version) if pkg.version is not None else ""
-        cmd = [self.conda, "install", "--yes", "--quiet",
-               "--satisfied-skip-solve",
-               self._normalize(pkg.name) + version]
-        run_command(cmd, raise_on_fail=raise_on_fail)
-
-    def upgrade(self, pkg, raise_on_fail=False):
-        version = "={}".format(pkg.version) if pkg.version is not None else ""
-        cmd = [self.conda, "install", "--yes", "--quiet",
-               "--satisfied-skip-solve",
-               self._normalize(pkg.name) + version]
-        run_command(cmd, raise_on_fail=raise_on_fail)
-
-    def uninstall(self, dist, raise_on_fail=False):
-        cmd = [self.conda, "uninstall", "--yes",
-               self._normalize(dist.project_name)]
-        run_command(cmd, raise_on_fail=raise_on_fail)
-
-    def _normalize(self, name):
-        # Conda 4.3.30 is inconsistent, upgrade command is case sensitive
-        # while install and uninstall are not. We assume that all conda
-        # package names are lowercase which fixes the problems (for now)
-        return name.lower()
-
-    def __bool__(self):
-        return bool(self.conda)
+    # def __bool__(self):
+    #     return bool(self.conda)
 
 
 def run_command(command, raise_on_fail=True, **kwargs):

@@ -562,9 +562,9 @@ class CanvasMainWindow(QMainWindow):
             shortcut=QKeySequence.Preferences
         )
         self.canvas_addons_action = QAction(
-            self.tr("&加载项..."), self,
+            '升级与插件', self,
             objectName="canvas-addons-action",
-            toolTip=self.tr("管理加载项。"),
+            toolTip=self.tr("管理升级与插件。"),
             triggered=self.open_addons,
         )
         self.show_output_action = QAction(
@@ -1846,7 +1846,7 @@ class CanvasMainWindow(QMainWindow):
         """Show a modal welcome dialog for Orange Canvas.
         """
         # name = QApplication.applicationName()
-        name = '橙现智能 -- 深圳兆阳信息技术研究院定制开发'
+        name = '橙现智能 -- 深圳市兆阳信息技术研究院定制开发'
         if name:
             title = self.tr("欢迎使用 {}").format(name)
         else:
@@ -2584,7 +2584,15 @@ def scheme_requires(
     desc = readwrite.parse_ows_stream(stream)
     if registry is not None:
         desc = readwrite.resolve_replaced(desc, registry)
-    return list(unique(m.project_name for m in desc.nodes if m.project_name))
+        projects = []
+        for m in desc.nodes:
+            if m.project_name:
+                if m.project_name == 'Orange3':
+                    projects.append('Orange3-zh')
+                else:
+                    projects.append(m.project_name)
+        return list(unique(projects))
+    # return list(unique(m.project_name for m in desc.nodes if m.project_name))
 
 
 K = TypeVar("K")

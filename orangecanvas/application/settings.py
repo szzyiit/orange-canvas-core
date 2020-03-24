@@ -319,6 +319,10 @@ class UserSettingsDialog(QMainWindow):
         cb4 = QCheckBox(self.tr("按任意按键时打开"),
                         toolTip=self.tr("当鼠标悬停在画布上时，按任意键。"))
 
+        cb5 = QCheckBox(self.tr("显示分类"),
+                        toolTip=self.tr("In addition to searching, allow filtering "
+                                        "by categories."))
+
         self.bind(cb1, "checked", "quickmenu/trigger-on-double-click")
         self.bind(cb2, "checked", "quickmenu/trigger-on-right-click")
         self.bind(cb3, "checked", "quickmenu/trigger-on-space-key")
@@ -448,15 +452,16 @@ class UserSettingsDialog(QMainWindow):
         conda.setLayout(QVBoxLayout())
         conda.layout().setContentsMargins(0, 0, 0, 0)
 
-        cb_conda_install = QCheckBox(self.tr("使用 Conda 安装附加组件"), self,
+        mirror_install = QCheckBox(self.tr("使用国内镜像安装"), self,
                                      objectName="allow-conda")
-        self.bind(cb_conda_install, "checked", "add-ons/allow-conda")
-        conda.layout().addWidget(cb_conda_install)
+        self.bind(mirror_install, "checked", "add-ons/allow-conda")
+        conda.layout().addWidget(mirror_install)
 
-        form.addRow(self.tr("Conda"), conda)
+        form.addRow(self.tr("镜像"), conda)
 
         form.addRow(self.tr("Pip"), QLabel("Pip 安装参数:"))
         line_edit_pip = QLineEdit()
+        # line_edit_pip.setText('-i https://mirrors.aliyun.com/pypi/simple')
         self.bind(line_edit_pip, "text", "add-ons/pip-install-arguments")
         form.addRow("", line_edit_pip)
 
