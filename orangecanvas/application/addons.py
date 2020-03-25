@@ -282,11 +282,11 @@ class ActionItem(QStandardItem):
             state = model.data(modelindex, Qt.CheckStateRole)
             flags = model.flags(modelindex)
             if flags & Qt.ItemIsUserTristate and state == Qt.Checked:
-                return "Update"
+                return "升级"
             elif isinstance(item, Available) and state == Qt.Checked:
-                return "Install"
+                return "安装"
             elif isinstance(item, Installed) and state == Qt.Unchecked:
-                return "Uninstall"
+                return "卸载"
             else:
                 return ""
         elif role == DetailedText:
@@ -1457,13 +1457,15 @@ class Installer(QObject):
                     "正在安装 {}".format(pkg.installable.name))
                 if self.conda:
                     self.pip.install(pkg.installable)
-                self.pip.install(pkg.installable, mirror='')
+                else:
+                    self.pip.install(pkg.installable, mirror=())
             elif command == Upgrade:
                 self.setStatusMessage(
                     "正在升级{}".format(pkg.installable.name))
                 if self.conda:
-                    self.pip.install(pkg.installable)
-                self.pip.upgrade(pkg.installable, mirror='')
+                    self.pip.upgrade(pkg.installable)
+                else:
+                    self.pip.upgrade(pkg.installable, mirror=())
             elif command == Uninstall:
                 self.setStatusMessage(
                     "正在卸载{}".format(pkg.local.project_name))
@@ -1569,8 +1571,8 @@ class CondaInstaller:
     #     # package names are lowercase which fixes the problems (for now)
     #     return name.lower()
 
-    # def __bool__(self):
-    #     return bool(self.conda)
+    def __bool__(self):
+        return bool(self.conda)
 
 
 def run_command(command, raise_on_fail=True, **kwargs):
