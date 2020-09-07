@@ -310,7 +310,7 @@ class Default(Config):
             A list of package names (can also contain PEP-440 version
             specifiers).
         """
-        return ["orange-canvas-core >= 0.0, < 0.1a"]
+        return ["orange-canvas-core-ml >= 0.0, < 1.0"]
 
     @staticmethod
     def examples_entry_points():
