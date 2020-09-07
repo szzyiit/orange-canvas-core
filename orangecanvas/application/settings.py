@@ -345,14 +345,10 @@ class UserSettingsDialog(QMainWindow):
                               objectName="show-splash-screen")
 
         cb_welcome = QCheckBox(self.tr("显示欢迎界面"), self,
-<<<<<<< HEAD
                                objectName="show-welcome-screen")
 
         cb_crash = QCheckBox(self.tr("加载崩溃的工作流"), self,
                              objectName="load-crashed-workflows")
-=======
-                                objectName="show-welcome-screen")
->>>>>>> only chinese
 
         self.bind(cb_splash, "checked", "startup/show-splash-screen")
         self.bind(cb_welcome, "checked", "startup/show-welcome-screen")
