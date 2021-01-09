@@ -201,8 +201,6 @@ class TestAddonManagerDialog(QAppTestCase):
         w.setItemState([(Install, foo)])
         with patch.object(addons.PipInstaller, "install",
                           lambda self, pkg: None), \
-             patch.object(addons.CondaInstaller, "install",
-                          lambda self, pkg, raise_on_fail: None), \
              patch.object(QMessageBox, "exec_", return_value=QMessageBox.Cancel):
             b = w.findChild(QDialogButtonBox)
             b.accepted.emit()
